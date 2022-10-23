@@ -1,0 +1,28 @@
+# To get started with Dependabot version updates, you'll need to specify which
+# package ecosystems to update and where the package manifests are located.
+# Please see the documentation for all configuration options:
+# https://help.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
+
+version: 2
+
+registries:
+  tfs-code:
+    type: npm-registry
+    url: https://npm.pkg.github.com
+    token: ${{ secrets.REGISTRY_TOKEN }}
+
+updates:
+  - package-ecosystem: "npm" # See documentation for possible values
+    directory: "/" # Location of package manifests
+    registries:
+      - tfs-code
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 20
+  - package-ecosystem: "npm" # See documentation for possible values
+    directory: "src/lambda" # Location of package manifests
+    registries:
+      - tfs-code
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 20

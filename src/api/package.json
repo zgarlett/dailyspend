@@ -1,0 +1,17 @@
+{
+  "name": "src",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "sst:start": "sst start",
+    "sst:deploy": "sst deploy",
+    "sst:remove": "sst remove"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@tfs-code/lambda": "^1.1.2"
+  }
+}

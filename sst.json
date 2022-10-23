@@ -1,0 +1,5 @@
+{
+  "name": "dailyspend",
+  "region": "us-east-1",
+  "main": "aws/index.ts"
+}
