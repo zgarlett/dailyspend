@@ -1,30 +1,24 @@
-/** MultilineChart.js */
 import React from "react";
 import * as d3 from "d3";
-import { TopLevelData, Dimensions, JsonData} from './maincharts';
 interface Props {
-  data: TopLevelData[] ;
-  dimensions: Dimensions;
+    data: any[];
+    dimensions: any;
 }
-
-const MultilineChart = (props: Props) => {
+export const D3Chart = (props: Props) => {
   const { data, dimensions } = props;
   const svgRef = React.useRef(null);
-  const { width, height, margin } = dimensions;
+  const { width, height, margin} = dimensions;
   const svgWidth = width + margin.left + margin.right;
   const svgHeight = height + margin.top + margin.bottom;
-  const xDomain = d3.extent(data[0].items, (d: JsonData) => new Date(d.date)) as [Date, Date];
-  const yMin = (d3.min(data[0].items, (d) => d.value) as number) - 50;
-  const yMax = (d3.max(data[0].items, (d) => d.value) as number) + 50;
+ 
   React.useEffect(() => {
+
     const xScale = d3.scaleTime()
-      .domain(xDomain)
-      .range([0, width]);
+      .domain([])
+      .range([]);
     const yScale = d3.scaleLinear()
-      .domain([yMin,
-        yMax
-      ])
-      .range([300, 0]);
+      .domain([])
+      .range([]);
     // Create root container where we will append all other chart elements
     const svgEl = d3.select(svgRef.current);
     svgEl.selectAll("*").remove(); // Clear svg content before adding new elements 
@@ -36,7 +30,7 @@ const MultilineChart = (props: Props) => {
      .ticks(5)
      .tickSize(-height + margin.bottom);
    const xAxisGroup = svg.append("g")
-     .attr("transform", `translate(0, ${height - margin.bottom + 12})`)
+     .attr("transform", `translate(0, ${height - margin.bottom})`)
      .call(xAxis);
    xAxisGroup.select(".domain").remove();
    xAxisGroup.selectAll("line").attr("stroke", "rgba(255, 255, 255, 0.2)");
@@ -46,7 +40,7 @@ const MultilineChart = (props: Props) => {
      .attr("font-size", "0.75rem");
    // Add Y grid lines with labels
    const yAxis = d3.axisLeft(yScale)
-     .ticks(10)
+     .ticks(5)
      .tickSize(-width)
      .tickFormat((val) => `${val}%`);
    const yAxisGroup = svg.append("g").call(yAxis);
@@ -57,20 +51,18 @@ const MultilineChart = (props: Props) => {
      .attr("color", "white")
      .attr("font-size", "0.75rem");
     // Draw the lines
-    const line = d3.line<JsonData>()
-      .x((d, i) => xScale(new Date(d.date)))
-      .y((d, i) => yScale(d.value));
+    const line = d3.line()
+      .x((d) => xScale(d[0]))
+      .y((d) => yScale(d[0]));
     svg.selectAll(".line")
-      .data(data)
+      .data(data || [])
       .enter()
       .append("path")
       .attr("fill", "none")
-      .attr("stroke", (d, i) => d.color)
-      .attr("stroke-width", (d, i) => d.weight)
-      .attr("d", (d) => line(d.items));
+      .attr("stroke", (d) => d[0].color)
+      .attr("stroke-width", 3)
+      .attr("d", (d) => line(d[0].items));
   }, [data]); // Redraw chart if data changes
  
   return <svg ref={svgRef} width={svgWidth} height={svgHeight} />;
 };
- 
-export default MultilineChart;

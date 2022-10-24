@@ -1,8 +1,9 @@
-import { LambdaToolkit, ProxyGatewayHandler } from '@tfs-code/lambda';
-import { GetBalance, UpdateBalance, UpdateBalances } from '../functions/balance';
-import { GetLastRunDate, UpdateLastRunDate } from '../functions/lastRun';
+import { DynamoHelper, LambdaToolkit, ProxyGatewayHandler } from '@tfs-code/lambda';
+import { GetBalance, UpdateBalance, UpdateBalances } from '../functions/dynamo/balance';
+import { GetLastRunDate, UpdateLastRunDate } from '../functions/dynamo/lastRun';
 export const Toolkit = LambdaToolkit('DailySpend');
 const routeHandler = Toolkit.manifestHandler(ProxyGatewayHandler);
+export const dbHelper = Toolkit.manifestHelper(DynamoHelper);
 
 export const handler = routeHandler({
   v1: {
@@ -13,9 +14,6 @@ export const handler = routeHandler({
       },
       balance: {
         get: GetBalance,
-        post: UpdateBalance,
-      },
-      multipleBalances: {
         post: UpdateBalances
       }
     },

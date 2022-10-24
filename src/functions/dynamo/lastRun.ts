@@ -1,8 +1,8 @@
 import { CompositeAPIEvent, LambdaLogger, DynamoHelper } from "@tfs-code/lambda";
-import { Toolkit } from "../api/routes";
+import { dbHelper, Toolkit } from "../../api/routes";
 const TableName = 'dev-dailyspend-LastRunDate';
 export const GetLastRunDate = async (logger: LambdaLogger, event: CompositeAPIEvent) => {
-    const dbHelper = Toolkit.manifestHelper(DynamoHelper);
+    
     const lastRunDate = await dbHelper.ScanTable(
         { TableName }
     );
@@ -25,7 +25,6 @@ export const GetLastRunDate = async (logger: LambdaLogger, event: CompositeAPIEv
 };
 
 export const UpdateLastRunDate = async (logger: LambdaLogger, event: CompositeAPIEvent) => {
-    const dbHelper = Toolkit.manifestHelper(DynamoHelper);
     const answer = await dbHelper.CreateItem({ TableName, Item: { lastRunDate: new Date().toISOString() } });
     logger.info({ answer });
     return {

@@ -1,8 +1,8 @@
 import { CompositeAPIEvent, DynamoHelper, LambdaLogger } from "@tfs-code/lambda";
-import { ApiResponse, Toolkit } from "../api/routes";
+import { ApiResponse } from '@types';
+import { dbHelper, Toolkit } from "../../api/routes";
 const TableName = 'dev-dailyspend-Balance';
 export const GetBalance = async (logger: LambdaLogger, event: CompositeAPIEvent) => {
-    const dbHelper = Toolkit.manifestHelper(DynamoHelper);
     const lastRunDate = await dbHelper.ScanTable(
         { TableName }
     );
@@ -25,7 +25,6 @@ export const GetBalance = async (logger: LambdaLogger, event: CompositeAPIEvent)
 };
 
 export const UpdateBalances = async (logger: LambdaLogger, event: CompositeAPIEvent) => {
-    const dbHelper = Toolkit.manifestHelper(DynamoHelper);
     const listOfBalances = EventValidation(event);
     if (!Array.isArray(listOfBalances)) {
         return listOfBalances as ApiResponse;
