@@ -12,4 +12,9 @@ declare module '@types' {
         marketValue: number;
         value: number
     }
+
+    export interface BalanceData {
+        date: string;
+        balance: number;
+    }
 }

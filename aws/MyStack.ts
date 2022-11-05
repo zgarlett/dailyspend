@@ -9,6 +9,16 @@ export default class MyStack extends sst.Stack {
 
         // Create a HTTP API
         const api = new sst.Api(this, 'DailySpendRestApi', {
+            defaults: {
+                function: {
+                    functionName: 'ApiBalanceFunction',
+                    environment: {
+                        resourceArn: props.rds.clusterArn,
+                        secretArn: props.rds.secretArn,
+                        database: props.rds.defaultDatabaseName
+                    }
+                }
+            },
             routes: {
                 $default: 'api/routes.handler',
             },
@@ -30,7 +40,7 @@ export default class MyStack extends sst.Stack {
             primaryIndex: { partitionKey: 'lastRunDate'},
         });
 
-        api.attachPermissions([balanceTable, lastRunDateTable, props?.rds]);
+        api.attachPermissions([balanceTable, lastRunDateTable, props.rds]);
         // Show the endpoint in the output
         this.addOutputs({
             ApiEndpoint: api.url,

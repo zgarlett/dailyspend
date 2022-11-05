@@ -3,7 +3,7 @@ import React from "react";
 import * as d3 from "d3";
 import { TopLevelData, Dimensions, JsonData} from './maincharts';
 interface Props {
-  data: TopLevelData[] ;
+  data: TopLevelData<JsonData>[] ;
   dimensions: Dimensions;
 }
 
@@ -21,10 +21,8 @@ const MultilineChart = (props: Props) => {
       .domain(xDomain)
       .range([0, width]);
     const yScale = d3.scaleLinear()
-      .domain([yMin,
-        yMax
-      ])
-      .range([300, 0]);
+      .domain([yMin,yMax])
+      .range([height, 0]);
     // Create root container where we will append all other chart elements
     const svgEl = d3.select(svgRef.current);
     svgEl.selectAll("*").remove(); // Clear svg content before adding new elements 

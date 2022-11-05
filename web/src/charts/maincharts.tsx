@@ -22,18 +22,18 @@ export interface Dimensions {
     value: number;
   }
   
-  export interface TopLevelData {
+  export interface TopLevelData<T extends any> {
     name: string;
     color: string;
     weight: number;
-    items: JsonData[];
+    items: T[];
   }
 
-const portfolioData = { name: "Portfolio", color: "#ffffff",weight: 1, items: portfolio as JsonData[]} as TopLevelData;
-const schcData = { name: "SCHC", color: "#d53e4f",weight: 3, items: schc as JsonData[]} as TopLevelData;
-const vcitData = { name: "VCIT", color: "#5e4fa2",weight: 1, items: vcit as JsonData[]} as TopLevelData;
+const portfolioData = { name: "Portfolio", color: "#ffffff",weight: 1, items: portfolio as JsonData[]} as TopLevelData<JsonData>;
+const schcData = { name: "SCHC", color: "#d53e4f",weight: 3, items: schc as JsonData[]} as TopLevelData<JsonData>;
+const vcitData = { name: "VCIT", color: "#5e4fa2",weight: 1, items: vcit as JsonData[]} as TopLevelData<JsonData>;
 const dimensions = {
-    width: 600,
+    width: 900,
     height: 300,
     margin: { top: 30, right: 30, bottom: 30, left: 60 }
 };

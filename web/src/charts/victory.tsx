@@ -22,10 +22,11 @@ ChartJS.register(
 );
 
 export const options = {
+  maintainAspectRatio: false,
   responsive: true,
   plugins: {
     legend: {
-      position: 'top' as const,
+      position: 'bottom' as const,
     },
     title: {
       display: true,
@@ -41,16 +42,16 @@ export const data = {
   datasets: [
     {
       label: 'Dataset 1',
-      data: [[9, 23, 0],[ 0, 56],[null], [ 89, 90],[ 21, 64], [53, 41], [30, 0]],
+      data: [[9, 23, 0],[ 0, 56],[0,2], [ 89, 90],[ 21, 94], [53, 41], [30, 0]],
       borderColor: 'rgb(255, 99, 132)',
       backgroundColor: 'rgba(255, 99, 132, 0.5)',
     },
-    {
-      label: 'Dataset 2',
-      data: labels.map(() => Array.from({ length: 2 }, () => Math.random() * 100)),
-      borderColor: 'rgb(53, 162, 235)',
-      backgroundColor: 'rgba(53, 162, 235, 0.5)',
-    },
+    // {
+    //   label: 'Dataset 2',
+    //   data: labels.map(() => Array.from({ length: 2 }, () => Math.random() * 100)),
+    //   borderColor: 'rgb(53, 162, 235)',
+    //   backgroundColor: 'rgba(53, 162, 235, 0.5)',
+    // },
   ],
 };
 
