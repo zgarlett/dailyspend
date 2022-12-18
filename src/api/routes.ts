@@ -4,6 +4,7 @@ import { GetLastRunDate, UpdateLastRunDate } from '../functions/dynamo/lastRun';
 import { BatchInsert, InsertBalance, InsertBalances, SelectBalance } from '../functions/rds/index';
 import { SSMClient } from "@aws-sdk/client-ssm";
 import { RDSHelper } from '@snacpacc/lambda';
+import { WakeUp } from '../functions/wake';
 
 const { resourceArn = '', secretArn = '', database = '' } = process.env;
 
@@ -39,6 +40,9 @@ export const handler = routeHandler({
       batch: {
         post: BatchInsert
       }
+    },
+    wake: {
+      get: WakeUp
     }
   }
 });

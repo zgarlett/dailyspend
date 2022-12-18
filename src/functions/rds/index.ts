@@ -36,6 +36,8 @@ export const InsertBalance = async (logger: LambdaLogger, event: CompositeAPIEve
 
 export const InsertBalances = async (logger: LambdaLogger, event: CompositeAPIEvent) => {
 
+    logger.info({ event });
+    logger.info('InsertBalances');
     if (!event.body) {
         throw new Error('Missing body');
     }
@@ -50,18 +52,21 @@ export const InsertBalances = async (logger: LambdaLogger, event: CompositeAPIEv
         const { date, balance } = item;
         return `INSERT INTO balance (date, balance) VALUES (str_to_date( '${date}', '%Y-%m-%d') , ${balance})`;
     });
+    logger.info({ sqlCommands });
     try {
         const result = await rdsHelper.runCommands(sqlCommands);
+        logger.info({ result });
         return {
             statusCode: 200,
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ ...result }),
         };
     } catch (error) {
+        logger.error({ error })
         return {
             statusCode: 400,
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ error }),
+            body: JSON.stringify({ error: error.message }),
         };
 
     }
@@ -78,6 +83,8 @@ export const BatchInsert = async (logger: LambdaLogger, event: CompositeAPIEvent
     if (!Array.isArray(body)) {
         throw new Error('Body is not an array');
     }
+
+  
 
     const sql = `INSERT INTO balance (date, balance) VALUES ( :date , :balance)`;
     const parameters: SqlParameter[][] = body.map((item: BalanceData) => { 
